@@ -3,3 +3,4 @@
 
 courseinfo submission contains
 -   part 2.1: Course information step6
+-   part 2.2: Course information step7
