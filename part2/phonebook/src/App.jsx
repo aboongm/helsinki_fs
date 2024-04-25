@@ -25,44 +25,53 @@ const App = () => {
     event.preventDefault();
     console.log("button clicked: ", event.target);
     const existingPerson = persons.find((person) => person.name === newName);
-  
+
     if (existingPerson) {
       const updatedPerson = {
         ...existingPerson,
-        number: newNumber
+        number: newNumber,
       };
-  
-      window.alert(`${newName} is already added to phonebook. Number has been updated!`);
-      personService
-        .update(existingPerson.id, updatedPerson)
-        .then(response => {
-          console.log(response.data);          
-          const updatedPersons = filteredPersons.map(person =>
-            person.id === existingPerson.id ? response.data : person
-          );
-          setFilteredPersons(updatedPersons);
-        })
-        .catch(error => {
-          console.error("Error updating person:", error);
-        });
-      return;
+
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook. Number has been updated!`
+        )
+      ) {
+        personService
+          .update(existingPerson.id, updatedPerson)
+          .then((response) => {
+            console.log(response.data);
+            const updatedPersons = filteredPersons.map((person) =>
+              person.id === existingPerson.id ? response.data : person
+            );
+            setFilteredPersons(updatedPersons);
+          })
+          .catch((error) => {
+            console.error("Error updating person:", error);
+          });
+        return;
+      } else {
+        setNewName("")
+        setNewNumber("")
+        return;
+      }
     }
-  
+
     const personObject = {
       name: newName,
       number: newNumber,
     };
-  
-    personService.create(personObject)
+
+    personService
+      .create(personObject)
       .then((response) => {
-        setPersons(persons.concat(response.data))
+        setPersons(persons.concat(response.data));
         setFilteredPersons(filteredPersons.concat(response.data));
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error creating person:", error);
       });
   };
-  
 
   const removePerson = (person) => {
     console.log("person id: ", person.id);
