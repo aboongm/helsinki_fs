@@ -3,7 +3,7 @@ import Person from "./components/Person";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import { useEffect } from "react";
-import personService from './services/persons'
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -14,14 +14,11 @@ const App = () => {
 
   useEffect(() => {
     console.log("effect!!!");
-    personService
-    .getAll()
-    .then(response => {
-          console.log("promise fulfilled!!!");
-          setPersons(response.data);
-          setFilteredPersons(response.data);
-      })
-
+    personService.getAll().then((response) => {
+      console.log("promise fulfilled!!!");
+      setPersons(response.data);
+      setFilteredPersons(response.data);
+    });
   }, []);
 
   const addPerson = (event) => {
@@ -37,13 +34,28 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-    
-    personService
-      .create(personObject)
-      .then(response => {
-        setPersons(persons.concat(response.data));
-        setFilteredPersons(filteredPersons.concat(response.data));
-      })
+
+    personService.create(personObject).then((response) => {
+      setFilteredPersons(filteredPersons.concat(response.data));
+    });
+  };
+
+  const removePerson = (person) => {
+    console.log("person id: ", person.id);
+
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService
+        .remove(person.id)
+        .then(() => {
+          console.log(`Person ${person.name} deleted successfully`);
+          const updatedPersons = persons.filter((p) => p.id !== person.id);
+          setPersons(updatedPersons);
+          setFilteredPersons(updatedPersons);
+        })
+        .catch((error) => {
+          console.error("Error deleting person:", error);
+        });
+    }
   };
 
   const handleNameChange = (event) => {
@@ -81,7 +93,11 @@ const App = () => {
       <h2>Numbers</h2>
       <div>
         {filteredPersons.map((person) => (
-          <Person key={person.id} person={person} />
+          <Person
+            key={person.id}
+            person={person}
+            removePerson={() => removePerson(person)}
+          />
         ))}
       </div>
     </div>
