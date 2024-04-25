@@ -20,8 +20,6 @@ const App = () => {
     setBad(bad+1)
   }
 
-  console.log(good, neutral, bad);
-
   return (
     <main>
       <h1>give feedback</h1>

@@ -1,12 +1,11 @@
 import React from 'react'
 
 const StatisticLine = ({text, value}) => {
-  if (text === 'positive') {
-    return <div>{text} {value} %</div>
-
-  }
   return (
-    <div>{text} {value}</div>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   )
 }
 
