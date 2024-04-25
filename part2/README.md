@@ -15,3 +15,5 @@ phonebook submission contains
 -   part 2.8: The Phonebook Step 3
 -   part 2.9*: The Phonebook Step 4
 -   part 2.10: The Phonebook Step 5
+-   part 2.11: The Phonebook Step 6
+
