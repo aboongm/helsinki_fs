@@ -1,6 +1,6 @@
 # Part 2
 ## COURSE INFO
 
-courseinfo submission contains
+courseinfo submission contains the following
 -   part 2.1: Course information step6
 -   part 2.2: Course information step7
