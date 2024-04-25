@@ -7,3 +7,7 @@ courseinfo submission contains
 -   part 2.3*: Course information step8
 -   part 2.4: Course information step9
 -   part 2.5: Separate module step10
+
+## PHONE BOOK
+phonebook submission contains
+-   part 2.6: The Phonebook Step 1
