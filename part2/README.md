@@ -12,3 +12,4 @@ courseinfo submission contains
 phonebook submission contains
 -   part 2.6: The Phonebook Step 1
 -   part 2.7: The Phonebook Step 2
+-   part 2.8: The Phonebook Step 3
