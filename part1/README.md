@@ -11,3 +11,15 @@ courseinfo submission contains
 ## UNICAFE
 unicafe submission contains
 -   part 1.6
+-   part 1.7
+-   part 1.8
+-   part 1.9
+-   part 1.10
+-   part 1.11
+
+## ANECDOTES
+anecdotes submission contains
+-   part 1.12
+-   part 1.13
+-   part 1.14
+
