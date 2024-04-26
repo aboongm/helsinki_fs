@@ -21,5 +21,7 @@ phonebook submission contains
 -   part 2.14: The Phonebook step 9
 -   part 2.15*: The Phonebook step 10
 -   part 2.16: Phonebook step 11
--   part 2.17*: Phonebook step 12
+-   part 2.17*: Phonebook step 
+-   part 2.18* Data for countries, step 1
+-   part 2.19*: Data for countries, step 2
 
