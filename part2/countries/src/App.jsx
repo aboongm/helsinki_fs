@@ -26,7 +26,7 @@ function App() {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()}>
-        search:
+        find countries:
         <input
           value={search}
           onChange={handleSearch}
@@ -41,7 +41,7 @@ function App() {
           <p>area: {filteredCountries[0].area} sq. km</p>
           <ul>
             {Object.values(filteredCountries[0].languages).map((language, index) => (
-              <li key={index}>{language}</li>
+              <li key={index}>{language}</li>  
             ))}
           </ul>
           <img src={filteredCountries[0].flags.svg} alt={filteredCountries[0].name.common} />
