@@ -4,6 +4,7 @@ import axios from 'axios';
 function App() {
   const [countries, setCountries] = useState([]);
   const [search, setSearch] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState("")
 
   useEffect(() => {
     axios.get('https://restcountries.com/v3.1/all')
@@ -22,6 +23,10 @@ function App() {
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+
+  const showCountry = (country) => {
+    setSelectedCountry(country)
+  }
 
   return (
     <div>
@@ -51,6 +56,21 @@ function App() {
           {filteredCountries.map(country => (
             <li key={country.cca3}>
               {country.name.common}
+              <button onClick={() => showCountry(country)}>show</button>
+              {selectedCountry.cca3 === country.cca3 && (
+                <div>
+                  <h2>{selectedCountry.name.common}</h2>
+                  <p>capital: {selectedCountry.capital}</p>
+                  <p>area: {selectedCountry.area} sq. km</p>
+                  <ul>
+                    {Object.values(selectedCountry.languages).map((language, index) => (
+                      <li key={index}>{language}</li>  
+                    ))}
+                  </ul>
+                  <img src={selectedCountry.flags.svg} alt={selectedCountry.name.common} />
+                </div>
+              )}
+              
             </li>
           ))}
         </ul>
