@@ -21,4 +21,5 @@ phonebook submission contains
 -   part 2.14: The Phonebook step 9
 -   part 2.15*: The Phonebook step 10
 -   part 2.16: Phonebook step 11
+-   part 2.17*: Phonebook step 12
 

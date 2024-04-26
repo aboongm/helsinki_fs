@@ -13,6 +13,7 @@ const App = () => {
   const [searchName, setSearchName] = useState("");
   const [filteredPersons, setFilteredPersons] = useState(persons);
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     console.log("effect!!!");
@@ -49,6 +50,7 @@ const App = () => {
             setNewNumber("");
             setMessage(`Updated ${response.data.name}`);
             setFilteredPersons(updatedPersons);
+            setIsError(false)
 
             setTimeout(() => {
               setMessage("");
@@ -77,7 +79,8 @@ const App = () => {
         setFilteredPersons(filteredPersons.concat(response.data));
         setNewName("");
         setNewNumber("");
-        
+        setIsError(false)
+
         setMessage(`Added ${response.data.name}`);
         setTimeout(() => {
           setMessage("");
@@ -94,14 +97,26 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
       personService
         .remove(person.id)
-        .then(() => {
+        .then((response) => {
           console.log(`Person ${person.name} deleted successfully`);
           const updatedPersons = persons.filter((p) => p.id !== person.id);
           setPersons(updatedPersons);
           setFilteredPersons(updatedPersons);
+          setIsError(false)
+
+          setMessage(`Deleted ${person.name}`);
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
         })
         .catch((error) => {
           console.error("Error deleting person:", error);
+          setIsError(true)
+
+          setMessage(`Information of ${person.name} has already been removed from server`);
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
         });
     }
   };
@@ -128,7 +143,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      {message && <Notification message={message} />}
+      {message && <Notification message={message} isError={isError} />}
       <Filter searchName={searchName} handleSearch={handleSearch} />
 
       <h1>add a new</h1>
