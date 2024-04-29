@@ -26,6 +26,12 @@ let persons = [
   },
 ];
 
+const generateId = () => {
+    const maxId = Math.max(...persons.map((person) => person.id), 0);
+    return Math.floor(Math.random() * 1000000) + maxId + 1;
+  };
+  
+
 app.get("/info", (request, response) => {
   const currentTime = new Date();
   response.send(`
@@ -49,19 +55,33 @@ app.get("/api/persons/:id", (request, response) => {
   }
 });
 
-app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id);
-    const personIndex = persons.findIndex(person => person.id === id);
-    console.log("index", personIndex);
-    if (personIndex === -1) {
-        return response.status(404).json({ error: 'Person not found' });
-    }
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const personIndex = persons.findIndex((person) => person.id === id);
+  console.log("index", personIndex);
+  if (personIndex === -1) {
+    return response.status(404).json({ error: "Person not found" });
+  }
 
-    persons = persons.filter(person => person.id !== id);
-    console.log(persons);
-    response.status(204).end();
+  persons = persons.filter((person) => person.id !== id);
+  console.log(persons);
+  response.status(204).end();
 });
 
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+
+  console.log('body: ', body);
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number,
+  };
+
+  persons = persons.concat(person);
+  response.json(person);
+});
 
 const PORT = 3001;
 app.listen(PORT, () => {
