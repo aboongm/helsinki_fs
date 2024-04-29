@@ -9,3 +9,4 @@ phonebook submission contains
 -   part 3.5: Phonebook backend step 5
 -   part 3.6: Phonebook backend step 6
 -   part 3.7: Phonebook backend step 7
+-   part 3.8*: Phonebook backend step 8

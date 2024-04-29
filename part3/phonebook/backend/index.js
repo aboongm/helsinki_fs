@@ -2,8 +2,18 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan")
 
+morgan.token("reqBody", (request, response) => {
+    if(request.method === "POST") {
+        return JSON.stringify(request.body)
+    }
+    return "";
+})
+
 app.use(express.json());
-app.use(morgan('tiny'))
+// app.use(morgan('tiny'))
+app.use(morgan(
+    `:method :url :status :res[content-length] - :response-time ms:reqBody`
+))
 
 let persons = [
   {
@@ -60,21 +70,17 @@ app.get("/api/persons/:id", (request, response) => {
 app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
   const personIndex = persons.findIndex((person) => person.id === id);
-  console.log("index", personIndex);
   if (personIndex === -1) {
     return response.status(404).json({ error: "Person not found" });
   }
 
   persons = persons.filter((person) => person.id !== id);
-  console.log(persons);
   response.status(204).end();
 });
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
-  console.log('body: ', body);
-  
   if (!body.name || !body.number) {
     return response.status(400).json({
         error: "The name or number is missing"
