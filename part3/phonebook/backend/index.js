@@ -29,11 +29,8 @@ let persons = [
 app.get("/info", (request, response) => {
   const currentTime = new Date();
   response.send(`
-  <p>
-    Phonebook has info for ${persons.length} people
-    <br />
-    ${currentTime}
-  </p>
+  <p>Phonebook has info for ${persons.length} people</p>
+  <p>${currentTime}</p>
   `);
 });
 
