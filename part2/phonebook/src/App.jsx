@@ -88,6 +88,7 @@ const App = () => {
         const errorMessageRegex =
           /ValidationError: Person validation failed: (.+?)\./;
         const html = error.response.data;
+        console.log("error.response.data: ", html);
         const errorMessageMatch = errorMessageRegex.exec(html);
 
         if (errorMessageMatch) {
