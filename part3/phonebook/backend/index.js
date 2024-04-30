@@ -77,17 +77,20 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const personIndex = persons.findIndex((person) => person.id === id);
-  if (personIndex === -1) {
-    return response.status(404).json({ error: "Person not found" });
-  }
-
-  persons = persons.filter((person) => person.id !== id);
-  response.status(204).end();
+  Person.findByIdAndDelete(request.params.id)
+    .then(deletedPerson => {
+      if (!deletedPerson) {
+        return response.status(404).json({ error: "Person not found" });
+      }
+      response.status(204).end();
+    })
+    .catch(error => {
+      console.error(error);
+      response.status(500).json({ error: "Internal server error" });
+    });
 });
 
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", async (request, response) => {
   const body = request.body;
 
   if (!body.name || !body.number) {
@@ -96,15 +99,28 @@ app.post("/api/persons", (request, response) => {
     });
   }
 
-  const person = new Person({
-    name: body.name,
-    number: body.number
-  })
+  try {
+    const existingPerson = await Person.findOne({ $or: [{ name: body.name }, { number: body.number }] });
 
-  person.save().then(savedPerson => {
-    response.json(savedPerson)
-  })
+    if (existingPerson) {
+      return response.status(400).json({
+        error: "Name and Number must be unique",
+      });
+    }
+
+    const person = new Person({
+      name: body.name,
+      number: body.number,
+    });
+
+    const savedPerson = await person.save();
+    response.json(savedPerson);
+  } catch (error) {
+    console.error("Error saving person:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
 });
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
