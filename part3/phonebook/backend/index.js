@@ -13,9 +13,9 @@ morgan.token("reqBody", (request, response) => {
   return "";
 });
 
+app.use(cors());
 app.use(express.static("dist"));
 app.use(express.json());
-app.use(cors());
 // app.use(morgan('tiny'))
 app.use(
   morgan(
@@ -23,33 +23,17 @@ app.use(
   )
 );
 
-// let persons = [
-//   {
-//     id: 1,
-//     name: "Arto Hellas",
-//     number: "040-123456",
-//   },
-//   {
-//     id: 2,
-//     name: "Ada Lovelace",
-//     number: "39-44-5323523",
-//   },
-//   {
-//     id: 3,
-//     name: "Dan Abramov",
-//     number: "12-43-234345",
-//   },
-//   {
-//     id: 4,
-//     name: "Mary Poppendieck",
-//     number: "39-23-6423122",
-//   },
-// ];
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
 
-const generateId = () => {
-  const maxId = Math.max(...persons.map((person) => person.id), 0);
-  return Math.floor(Math.random() * 1000000) + maxId + 1;
-};
+  if(error.name === 'CastError') {
+    return response.status(400).send({error: "malformatted id"})
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 app.get("/info", (request, response) => {
   const currentTime = new Date();
@@ -76,7 +60,7 @@ app.get("/api/persons/:id", (request, response) => {
   }
 });
 
-app.delete("/api/persons/:id", (request, response) => {
+app.delete("/api/persons/:id", (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
     .then(deletedPerson => {
       if (!deletedPerson) {
@@ -84,13 +68,10 @@ app.delete("/api/persons/:id", (request, response) => {
       }
       response.status(204).end();
     })
-    .catch(error => {
-      console.error(error);
-      response.status(500).json({ error: "Internal server error" });
-    });
+    .catch(error => next(error));
 });
 
-app.post("/api/persons", async (request, response) => {
+app.post("/api/persons", async (request, response, next) => {
   const body = request.body;
 
   if (!body.name || !body.number) {
@@ -116,8 +97,7 @@ app.post("/api/persons", async (request, response) => {
     const savedPerson = await person.save();
     response.json(savedPerson);
   } catch (error) {
-    console.error("Error saving person:", error);
-    response.status(500).json({ error: "Internal server error" });
+    next(error);
   }
 });
 
