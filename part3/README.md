@@ -28,3 +28,4 @@ phonebook submission contains
 -   part 3.18*: Phonebook database step 6
 
 -   part 3.19*: Phonebook database, step 7
+-   part 3.20*: Phonebook database, step 8
