@@ -29,4 +29,5 @@ phonebook submission contains
 
 -   part 3.19*: Phonebook database, step 7
 -   part 3.20*: Phonebook database, step 8
+
 -   part 3.21 Deploying the database backend to production
