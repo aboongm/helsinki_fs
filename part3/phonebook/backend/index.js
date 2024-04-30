@@ -49,16 +49,17 @@ app.get("/api/persons", (request, response) => {
   })
 });
 
-app.get("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
-    response.json(person);
-  } else {
-    response.status(404).end();
-  }
+app.get("/api/persons/:id", (request, response, next) => {
+  Person.findOne({ _id: request.params.id }) // Use an object to specify the query criteria
+    .then(person => {
+      if (!person) {
+        return response.status(404).json({ error: "Person not found" });
+      }
+      response.json(person);
+    })
+    .catch(error => next(error));
 });
+
 
 app.delete("/api/persons/:id", (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
@@ -81,14 +82,6 @@ app.post("/api/persons", async (request, response, next) => {
   }
 
   try {
-    // const existingPerson = await Person.findOne({ $or: [{ name: body.name }, { number: body.number }] });
-
-    // if (existingPerson) {
-    //   return response.status(400).json({
-    //     error: "Name and Number must be unique",
-    //   });
-    // }
-
     const person = new Person({
       name: body.name,
       number: body.number,
