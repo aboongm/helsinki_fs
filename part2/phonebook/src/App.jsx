@@ -16,9 +16,7 @@ const App = () => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    console.log("effect!!!");
     personService.getAll().then((response) => {
-      console.log("promise fulfilled!!!");
       setPersons(response.data);
       setFilteredPersons(response.data);
     });
@@ -50,7 +48,7 @@ const App = () => {
             setNewNumber("");
             setMessage(`Updated ${response.data.name}`);
             setFilteredPersons(updatedPersons);
-            setIsError(false)
+            setIsError(false);
 
             setTimeout(() => {
               setMessage("");
@@ -79,7 +77,7 @@ const App = () => {
         setFilteredPersons(filteredPersons.concat(response.data));
         setNewName("");
         setNewNumber("");
-        setIsError(false)
+        setIsError(false);
 
         setMessage(`Added ${response.data.name}`);
         setTimeout(() => {
@@ -87,22 +85,35 @@ const App = () => {
         }, 2000);
       })
       .catch((error) => {
-        console.error("Error creating person:", error);
+        const errorMessageRegex =
+          /ValidationError: Person validation failed: (.+?)\./;
+        const html = error.response.data;
+        const errorMessageMatch = errorMessageRegex.exec(html);
+
+        if (errorMessageMatch) {
+          const errorMessage = errorMessageMatch[0];
+          setIsError(true);
+          setMessage(errorMessage);
+        } else {
+          setIsError(true);
+          setMessage("An unknown error occurred.");
+        }
+
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
       });
   };
 
   const removePerson = (person) => {
-    console.log("person id: ", person.id);
-
     if (window.confirm(`Delete ${person.name}?`)) {
       personService
         .remove(person.id)
         .then((response) => {
-          console.log(`Person ${person.name} deleted successfully`);
           const updatedPersons = persons.filter((p) => p.id !== person.id);
           setPersons(updatedPersons);
           setFilteredPersons(updatedPersons);
-          setIsError(false)
+          setIsError(false);
 
           setMessage(`Deleted ${person.name}`);
           setTimeout(() => {
@@ -111,9 +122,11 @@ const App = () => {
         })
         .catch((error) => {
           console.error("Error deleting person:", error);
-          setIsError(true)
+          setIsError(true);
 
-          setMessage(`Information of ${person.name} has already been removed from server`);
+          setMessage(
+            `Information of ${person.name} has already been removed from server`
+          );
           setTimeout(() => {
             setMessage("");
           }, 2000);
