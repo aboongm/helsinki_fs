@@ -36,7 +36,7 @@ const App = () => {
 
       if (
         window.confirm(
-          `${newName} is already added to phonebook. Number has been updated!`
+          `${newName} is already added to phonebook. Number will be updated!`
         )
       ) {
         personService

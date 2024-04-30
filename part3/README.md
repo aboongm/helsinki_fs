@@ -24,4 +24,5 @@ phonebook submission contains
 
 -   part 3.15: Phonebook database, step 3
 -   part 3.16: Phonebook database, step 4
+-   part 3.17*: Phonebook database, step 5
 

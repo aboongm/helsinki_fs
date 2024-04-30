@@ -81,13 +81,13 @@ app.post("/api/persons", async (request, response, next) => {
   }
 
   try {
-    const existingPerson = await Person.findOne({ $or: [{ name: body.name }, { number: body.number }] });
+    // const existingPerson = await Person.findOne({ $or: [{ name: body.name }, { number: body.number }] });
 
-    if (existingPerson) {
-      return response.status(400).json({
-        error: "Name and Number must be unique",
-      });
-    }
+    // if (existingPerson) {
+    //   return response.status(400).json({
+    //     error: "Name and Number must be unique",
+    //   });
+    // }
 
     const person = new Person({
       name: body.name,
@@ -100,6 +100,21 @@ app.post("/api/persons", async (request, response, next) => {
     next(error);
   }
 });
+
+app.put("/api/persons/:id", async (request, response, next) => {
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number
+  }
+  Person.findByIdAndUpdate(request.params.id, person, {new: true})
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
+});
+
 
 
 const PORT = process.env.PORT || 3001;
