@@ -71,6 +71,28 @@ describe('Blog API', () => {
         const createdBlog = fetchResponse.body.find(blog => blog.title === newBlogWithoutLikes.title)
         assert.strictEqual(createdBlog.likes, 0)
     })
+
+    test('responds with status code 400 if title is missing', async () => {
+        const newBlogWithoutTitle = {
+            author: 'John Doe',
+            url: 'https://example.com',
+            likes: 10
+        }
+    
+        const response = await api.post('/api/blogs').send(newBlogWithoutTitle)
+        assert.strictEqual(response.status, 400)
+    })
+    
+    test('responds with status code 400 if url is missing', async () => {
+        const newBlogWithoutUrl = {
+            title: 'New Blog Post Without Url',
+            author: 'Jane Doe',
+            likes: 10
+        }
+    
+        const response = await api.post('/api/blogs').send(newBlogWithoutUrl)
+        assert.strictEqual(response.status, 400)
+    })
 })
 
 after(async () => {

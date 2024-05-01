@@ -15,4 +15,5 @@ blog list submission contains
 -   part 4.9: Blog List Tests, step 2
 -   part 4.10: Blog List Tests, step 3
 -   part 4.11*: Blog List Tests, step 4
+-   part 4.12*: Blog List tests, step 5
 
