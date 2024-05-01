@@ -141,7 +141,6 @@ describe("favorite blog", () => {
 
   test("returns the favorite blog correctly", () => {
     const result = listHelper.favoriteBlog(blogs);
-    console.log(result);
     assert.deepStrictEqual(result, {
       title: 'Canonical string reduction',
       author: 'Edsger W. Dijkstra',
@@ -152,5 +151,11 @@ describe("favorite blog", () => {
   test("returns null for empty list", () => {
     const result = listHelper.favoriteBlog([]);
     assert.strictEqual(result, null);
+  });
+
+  test("author with most blogs", () => {
+    const result = listHelper.mostBlogs(blogs);
+    console.log(result);
+    assert.deepStrictEqual(result, { author: 'Robert C. Martin', blogs: 3 });
   });
 });
