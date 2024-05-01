@@ -12,7 +12,7 @@ const helper = require("../utils/list_helper");
 describe("when there is initially some blogs saved", () => {
   beforeEach(async () => {
     await Blog.deleteMany({});
-    const initialBlogsArray = helper.initialBlogs(); 
+    const initialBlogsArray = helper.initialBlogs();
     await Blog.insertMany(initialBlogsArray);
   });
 
@@ -110,21 +110,37 @@ describe("when there is initially some blogs saved", () => {
     test("succeeds with status code 204 if id is valid", async () => {
       const initialResponse = await api.get("/api/blogs");
       const initialBlogs = initialResponse.body;
-  
+
       const blogToDelete = initialBlogs[0];
       const response = await api.delete(`/api/blogs/${blogToDelete.id}`);
       assert.strictEqual(response.status, 204);
-  
+
       const updatedResponse = await api.get("/api/blogs");
       const updatedBlogs = updatedResponse.body;
-  
-      const isBlogDeleted = updatedBlogs.some(blog => blog.id === blogToDelete.id);
+
+      const isBlogDeleted = updatedBlogs.some(
+        (blog) => blog.id === blogToDelete.id
+      );
       assert.strictEqual(isBlogDeleted, false);
     });
   });
-  
-});
 
+  test("updating a blog post", async () => {
+    const initialResponse = await api.get("/api/blogs");
+    const initialBlogs = initialResponse.body;
+
+    const blogToUpdate = initialBlogs[0];
+    const updatedLikes = blogToUpdate.likes + 1;
+
+    const updatedBlogData = { likes: updatedLikes };
+    const response = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlogData);
+
+    assert.strictEqual(response.status, 200);
+    assert.strictEqual(response.body.likes, updatedLikes);
+  });
+});
 
 after(async () => {
   await mongoose.connection.close();

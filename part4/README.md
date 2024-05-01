@@ -18,3 +18,4 @@ blog list submission contains
 -   part 4.12*: Blog List tests, step 5
 
 -   part 4.13 Blog List Expansions, step 1
+-   part 4.14 Blog List Expansions, step 2
