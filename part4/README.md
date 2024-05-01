@@ -11,3 +11,5 @@ blog list submission contains
 -   part 4.6*: Helper Functions and Unit Tests, step 4
 -   part 4.7*: Helper Functions and Unit Tests, step 5
 
+-   part 4.8: Blog List Tests, step 1
+
