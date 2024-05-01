@@ -32,6 +32,30 @@ describe('Blog API', () => {
             assert.ok(blog.hasOwnProperty('id'))   
         })
     })
+
+    test('creating a new blog post', async () => {
+        const prevResponse = await api.get('/api/blogs')
+        const prevLength = prevResponse.body.length
+
+        const newBlog = {
+            title: 'New Blog Post',
+            author: 'John Doe',
+            url: 'https://example.com',
+            likes: 10
+        }
+    
+        const response = await api.post('/api/blogs').send(newBlog)
+        assert.strictEqual(response.status, 201)
+    
+        const fetchResponse = await api.get('/api/blogs')
+        const newLength = fetchResponse.body.length
+        assert.strictEqual(newLength, prevLength+1) 
+    
+        const createdBlog = fetchResponse.body.find(blog => blog.title === newBlog.title)
+        assert.strictEqual(createdBlog.author, newBlog.author)
+        assert.strictEqual(createdBlog.url, newBlog.url)
+        assert.strictEqual(createdBlog.likes, newBlog.likes)
+    })
 })
 
 after(async () => {
