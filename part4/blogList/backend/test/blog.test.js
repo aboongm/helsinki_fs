@@ -142,9 +142,9 @@ describe("favorite blog", () => {
   test("returns the favorite blog correctly", () => {
     const result = listHelper.favoriteBlog(blogs);
     assert.deepStrictEqual(result, {
-      title: 'Canonical string reduction',
-      author: 'Edsger W. Dijkstra',
-      likes: 12
+      title: "Canonical string reduction",
+      author: "Edsger W. Dijkstra",
+      likes: 12,
     });
   });
 
@@ -155,7 +155,12 @@ describe("favorite blog", () => {
 
   test("author with most blogs", () => {
     const result = listHelper.mostBlogs(blogs);
+    assert.deepStrictEqual(result, { author: "Robert C. Martin", blogs: 3 });
+  });
+
+  test("author with most likes", () => {
+    const result = listHelper.mostLikes(blogs);
     console.log(result);
-    assert.deepStrictEqual(result, { author: 'Robert C. Martin', blogs: 3 });
+    assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", likes: 17 });
   });
 });
