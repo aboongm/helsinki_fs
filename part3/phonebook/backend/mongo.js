@@ -25,7 +25,7 @@ const person = new Person({
   number: process.argv[4],
 })
 
-if (process.argv.length == 3) {
+if (process.argv.length === 3) {
   Person.find({}).then((result) => {
     result.forEach((person) => {
       console.log(person)
