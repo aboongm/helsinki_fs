@@ -15,6 +15,7 @@ describe('Blog API', () => {
 
     test('there are two blogs', async () => {
         const response = await api.get('/api/blogs')
+        // mongodb should already be having 2 blogs or existing number of blogs
         assert.strictEqual(response.body.length, 2)
     })
 
@@ -55,6 +56,20 @@ describe('Blog API', () => {
         assert.strictEqual(createdBlog.author, newBlog.author)
         assert.strictEqual(createdBlog.url, newBlog.url)
         assert.strictEqual(createdBlog.likes, newBlog.likes)
+    })
+
+    test('likes default to 0 if missing', async () => {
+        const newBlogWithoutLikes = {
+            title: 'New Blog Post without likes',
+            author: 'Jane Doe',
+            url: 'https://example.com'
+        }
+    
+        const response = await api.post('/api/blogs').send(newBlogWithoutLikes)
+        assert.strictEqual(response.status, 201)
+        const fetchResponse = await api.get('/api/blogs')
+        const createdBlog = fetchResponse.body.find(blog => blog.title === newBlogWithoutLikes.title)
+        assert.strictEqual(createdBlog.likes, 0)
     })
 })
 
