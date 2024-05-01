@@ -58,10 +58,28 @@ const mostLikes = (blogs) => {
   };
 };
 
+const initialBlogs = () => {
+  return [
+    {
+      title: 'First Blog',
+      author: 'John Doe',
+      url: 'https://example.com/first-blog',
+      likes: 10
+    },
+    {
+      title: 'Second Blog',
+      author: 'Jane Smith',
+      url: 'https://example.com/second-blog',
+      likes: 15
+    },
+  ];
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
   mostLikes,
+  initialBlogs
 };
