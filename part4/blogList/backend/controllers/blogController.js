@@ -1,15 +1,8 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blogdb");
 const User = require("../models/user");
-
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '')
-  }
-  return null
-}
+const middleware = require('../utils/middleware');
 
 blogsRouter.get("/", async (request, response, next) => {
   try {
@@ -20,31 +13,40 @@ blogsRouter.get("/", async (request, response, next) => {
   }
 });
 
-blogsRouter.post("/", async (request, response, next) => {
+blogsRouter.post("/", middleware.tokenExtractor, async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token invalid' })
+    if (!request.token) {
+      return response.status(401).json({ error: 'token missing' });
     }
-    const user = await User.findById(decodedToken.id)
-    // const user = await User.findById(request.body.userId)
+
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid' });
+    }
+
+    const user = await User.findById(decodedToken.id);
+    if (!user) {
+      return response.status(401).json({ error: 'user not found' });
+    }
+
     const blog = new Blog({
       title: request.body.title,
       author: request.body.author,
-      url: request.body.author,
+      url: request.body.url,
       likes: request.body.likes,
       user: user.id
     });
 
     const savedBlog = await blog.save();
-    user.blogs = user.blogs.concat(savedBlog._id)
-    await user.save()
+    user.blogs = user.blogs.concat(savedBlog._id);
+    await user.save();
 
     response.status(201).json(savedBlog);
   } catch (error) {
     next(error);
   }
 });
+
 
 blogsRouter.delete("/:id", async (request, response, next) => {
   try {
