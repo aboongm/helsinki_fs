@@ -2,13 +2,16 @@ require("dotenv").config();
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const middleware = require('./utils/middleware')
-const blogsRouter = require("./controllers/blogController");
-const usersRouter = require("./controllers/userController");
+
 const mongoose = require("mongoose");
 
 const logger = require("./utils/logger");
 const config = require("./utils/config");
+
+const middleware = require('./utils/middleware')
+const blogsRouter = require("./controllers/blogController");
+const usersRouter = require("./controllers/userController");
+const loginRouter = require("./controllers/loginController")
 
 
 app.use(cors())
@@ -31,6 +34,7 @@ mongoose
 app.use(middleware.requestLogger);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
+app.use('/api/login', loginRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
