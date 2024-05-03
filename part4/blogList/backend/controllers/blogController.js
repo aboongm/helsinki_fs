@@ -48,15 +48,36 @@ blogsRouter.post("/", middleware.tokenExtractor, async (request, response, next)
 });
 
 
-blogsRouter.delete("/:id", async (request, response, next) => {
+blogsRouter.delete("/:id", middleware.tokenExtractor, async (request, response, next) => {
   try {
     const id = request.params.id;
+
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return response.status(404).json({ error: 'Blog not found' });
+    }
+
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'Token invalid' });
+    }
+
+    const user = await User.findById(decodedToken.id);
+    if (!user) {
+      return response.status(401).json({ error: 'User not found' });
+    }
+
+    if (blog.user.toString() !== user.id.toString()) {
+      return response.status(403).json({ error: 'You are not authorized to delete this blog' });
+    }
+
     await Blog.findByIdAndDelete(id);
     response.status(204).end();
   } catch (error) {
     next(error);
   }
 });
+
 
 blogsRouter.put("/:id", async (request, response, next) => {
   const { id } = request.params;
