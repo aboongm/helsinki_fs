@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const User = require("../models/user");
 
 const dummy = (blogs) => {
   return 1;
@@ -61,19 +62,24 @@ const mostLikes = (blogs) => {
 const initialBlogs = () => {
   return [
     {
-      title: 'First Blog',
-      author: 'John Doe',
-      url: 'https://example.com/first-blog',
-      likes: 10
+      title: "First Blog",
+      author: "John Doe",
+      url: "https://example.com/first-blog",
+      likes: 10,
     },
     {
-      title: 'Second Blog',
-      author: 'Jane Smith',
-      url: 'https://example.com/second-blog',
-      likes: 15
+      title: "Second Blog",
+      author: "Jane Smith",
+      url: "https://example.com/second-blog",
+      likes: 15,
     },
   ];
-}
+};
+
+const usersInDb = async () => {
+  const users = await User.find({});
+  return users.map((u) => u.toJSON());
+};
 
 module.exports = {
   dummy,
@@ -81,5 +87,6 @@ module.exports = {
   favoriteBlog,
   mostBlogs,
   mostLikes,
-  initialBlogs
+  initialBlogs,
+  usersInDb,
 };
