@@ -19,3 +19,6 @@ blog list submission contains
 
 -   part 4.13 Blog List Expansions, step 1
 -   part 4.14 Blog List Expansions, step 2
+
+
+-   part 4.15: Blog List Expansion, step 3
