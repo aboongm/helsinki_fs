@@ -1,12 +1,34 @@
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 const logger = require("./logger");
+const User = require("../models/user");
 
 const tokenExtractor = (request, response, next) => {
-  const authorization = request.get('authorization');
-  if (authorization && authorization.startsWith('Bearer ')) {
-    request.token = authorization.replace('Bearer ', '');
+  const authorization = request.get("authorization");
+  if (authorization && authorization.startsWith("Bearer ")) {
+    request.token = authorization.replace("Bearer ", "");
   } else {
     request.token = null;
   }
+  next();
+};
+
+const userExtractor = async (request, response, next) => {
+  const token = request.token;
+  
+  if (!token) {
+    request.user = null;
+    return next();
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    const user = await User.findById(decodedToken.id);
+    request.user = user;
+  } catch (error) {
+    request.user = null;
+  }
+
   next();
 };
 
@@ -45,6 +67,7 @@ const errorHandler = (error, request, response, next) => {
 
 module.exports = {
   tokenExtractor,
+  userExtractor,
   requestLogger,
   unknownEndpoint,
   errorHandler,
