@@ -3,16 +3,30 @@ const assert = require("node:assert");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
 const api = supertest(app);
 
 const Blog = require("../models/blogdb");
 const helper = require("../utils/list_helper");
+const User = require("../models/user");
+
+let token;
 
 describe("when there is initially some blogs saved", () => {
   beforeEach(async () => {
+    await User.deleteMany({});
+    const passwordHash = await bcrypt.hash(process.env.SECRET, 10);
+    const user = new User({ username: "root", passwordHash });
+    await user.save();
+    token = jwt.sign({ id: user._id.toString() }, process.env.SECRET);
+
+    // console.log("User ID:", user);
+
     await Blog.deleteMany({});
-    const initialBlogsArray = helper.initialBlogs();
+    const initialBlogsArray = helper.initialBlogs(user);
     await Blog.insertMany(initialBlogsArray);
   });
 
@@ -47,13 +61,17 @@ describe("when there is initially some blogs saved", () => {
     const prevLength = prevResponse.body.length;
 
     const newBlog = {
-      title: "New Blog Post",
+      title: "Another Blog Post",
       author: "John Doe",
       url: "https://example.com",
       likes: 10,
     };
 
-    const response = await api.post("/api/blogs").send(newBlog);
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newBlog);
+
     assert.strictEqual(response.status, 201);
 
     const fetchResponse = await api.get("/api/blogs");
@@ -75,7 +93,10 @@ describe("when there is initially some blogs saved", () => {
       url: "https://example.com",
     };
 
-    const response = await api.post("/api/blogs").send(newBlogWithoutLikes);
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newBlogWithoutLikes);
     assert.strictEqual(response.status, 201);
     const fetchResponse = await api.get("/api/blogs");
     const createdBlog = fetchResponse.body.find(
@@ -91,7 +112,10 @@ describe("when there is initially some blogs saved", () => {
       likes: 10,
     };
 
-    const response = await api.post("/api/blogs").send(newBlogWithoutTitle);
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newBlogWithoutTitle);
     assert.strictEqual(response.status, 400);
   });
 
@@ -102,17 +126,22 @@ describe("when there is initially some blogs saved", () => {
       likes: 10,
     };
 
-    const response = await api.post("/api/blogs").send(newBlogWithoutUrl);
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newBlogWithoutUrl);
     assert.strictEqual(response.status, 400);
   });
 
   describe("deletion of a blog", () => {
     test("succeeds with status code 204 if id is valid", async () => {
       const initialResponse = await api.get("/api/blogs");
-      const initialBlogs = initialResponse.body;
-
+      const initialBlogs = initialResponse.body;      
       const blogToDelete = initialBlogs[0];
-      const response = await api.delete(`/api/blogs/${blogToDelete.id}`);
+
+      const response = await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .set("Authorization", `Bearer ${token}`)
       assert.strictEqual(response.status, 204);
 
       const updatedResponse = await api.get("/api/blogs");

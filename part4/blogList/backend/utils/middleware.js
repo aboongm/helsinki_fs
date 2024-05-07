@@ -24,8 +24,10 @@ const userExtractor = async (request, response, next) => {
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET);
     const user = await User.findById(decodedToken.id);
+    console.log('decodedToken', decodedToken);
     request.user = user;
   } catch (error) {
+    console.error('Error decoding token:', error);
     request.user = null;
   }
 

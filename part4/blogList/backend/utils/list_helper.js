@@ -59,18 +59,20 @@ const mostLikes = (blogs) => {
   };
 };
 
-const initialBlogs = () => {
+const initialBlogs = (user) => {
   return [
     {
       title: "First Blog",
       author: "John Doe",
       url: "https://example.com/first-blog",
+      user: user,
       likes: 10,
     },
     {
       title: "Second Blog",
       author: "Jane Smith",
       url: "https://example.com/second-blog",
+      user: user,
       likes: 15,
     },
   ];

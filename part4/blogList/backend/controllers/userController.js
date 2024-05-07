@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const usersRouter = require("express").Router();
 const User = require("../models/user");
 
-usersRouter.post("/", async (request, response) => {
+usersRouter.post("/", async (request, response, next) => {
   try {
     const { username, name, password } = request.body;
     if (password === undefined) {
