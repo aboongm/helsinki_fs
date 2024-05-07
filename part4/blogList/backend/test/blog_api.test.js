@@ -19,7 +19,7 @@ describe("when there is initially some blogs saved", () => {
   beforeEach(async () => {
     await User.deleteMany({});
     const passwordHash = await bcrypt.hash(process.env.SECRET, 10);
-    const user = new User({ username: "root", passwordHash });
+    const user = new User({ username: "root2", passwordHash });
     await user.save();
     token = jwt.sign({ id: user._id.toString() }, process.env.SECRET);
 
