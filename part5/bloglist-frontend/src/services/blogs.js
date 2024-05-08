@@ -18,4 +18,16 @@ const create = async (blogData) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create }
+const update = async (blogData) => {
+  const loggedUserJSON = await window.localStorage.getItem('loggedBlogappUser')
+  const user = JSON.parse(loggedUserJSON)
+  
+  const credentials = {
+    headers: { Authorization: `Bearer ${user.token}`}
+  }
+  
+  const request = axios.put(`${baseUrl}/${blogData.id}`, blogData, credentials)
+  return request.then(response => response.data)
+}
+
+export default { getAll, create, update }
