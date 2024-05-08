@@ -13,9 +13,6 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
 
   const blogFormRef = useRef();
 
@@ -65,9 +62,8 @@ const App = () => {
     window.location.reload();
   };
 
-  const handleBlog = async (event) => {
-    event.preventDefault();
-    blogFormRef.current.toggleVisibility()
+  const handleBlog = async ({title, author, url}) => {
+    blogFormRef.current.toggleVisibility();
 
     try {
       await blogService.create({
@@ -78,10 +74,6 @@ const App = () => {
 
       setMessage(`a new blog ${title} by ${author}`);
       setIsError(false);
-
-      setTitle("");
-      setAuthor("");
-      setUrl("");
 
       setTimeout(() => {
         setMessage("");
@@ -137,15 +129,9 @@ const App = () => {
             <button onClick={handleLogout}>logout</button>
           </p>
 
-          <Togglable buttonLabel="create new blog" ref={blogFormRef} >
+          <Togglable buttonLabel="create new blog" ref={blogFormRef}>
             <BlogForm
               handleBlog={handleBlog}
-              title={title}
-              setTitle={setTitle}
-              author={author}
-              setAuthor={setAuthor}
-              url={url}
-              setUrl={setUrl}
             />
           </Togglable>
 

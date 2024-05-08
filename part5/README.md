@@ -8,3 +8,4 @@ blog list submission contains
 -   part 5.4: Blog List Frontend, step 4
 
 -   part 5.5 Blog List Frontend, step 5
+-   part 5.6 Blog List Frontend, step 6
