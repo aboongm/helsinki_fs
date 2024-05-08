@@ -11,3 +11,5 @@ blog list submission contains
 -   part 5.6 Blog List Frontend, step 6
 -   part 5.7 Blog List Frontend, step 7
 -   part 5.8: Blog List Frontend, step 8
+-   part 5.9: Blog List Frontend, step 9
+
