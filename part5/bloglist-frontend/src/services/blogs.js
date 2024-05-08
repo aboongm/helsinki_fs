@@ -30,4 +30,18 @@ const update = async (blogData) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, update }
+const remove = async (blog) => {
+  const loggedUserJSON = await window.localStorage.getItem('loggedBlogappUser')
+  const user = JSON.parse(loggedUserJSON)
+
+  window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+  
+  const credentials = {
+    headers: { Authorization: `Bearer ${user.token}`}
+  }
+  
+  const request = axios.delete(`${baseUrl}/${blog.id}`, credentials)
+  return request.then(response => response.data)
+}
+
+export default { getAll, create, update, remove }

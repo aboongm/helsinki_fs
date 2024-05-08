@@ -4,6 +4,9 @@ import blogService from '../services/blogs'
 const Blog = ({ blog, setBlogs }) => {
   const [view, setView] = useState(false)
 
+  const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+  let user = JSON.parse(loggedUserJSON)
+  
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -26,6 +29,17 @@ const Blog = ({ blog, setBlogs }) => {
     }
   }
 
+  const handleRemove = async () => {
+    console.log('handle remove!');    
+    try {
+      await blogService.remove(blog)
+      const updatedBlogs = await blogService.getAll()
+      setBlogs(updatedBlogs)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author} {" "}
@@ -38,6 +52,9 @@ const Blog = ({ blog, setBlogs }) => {
               <button onClick={handleLike}>like</button>
           </div>
           <div>{blog.author}</div>
+          {blog.user.username === user.username && (
+            <button onClick={handleRemove}>remove</button>
+          )}
         </div>
         )}
     </div>
