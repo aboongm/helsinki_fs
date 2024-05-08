@@ -1,94 +1,94 @@
-import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
-import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
-import BlogForm from "./components/BlogForm";
+import { useState, useEffect, useRef } from 'react'
+import Blog from './components/Blog'
+import blogService from './services/blogs'
+import loginService from './services/login'
+import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+  const [blogs, setBlogs] = useState([])
+  const [message, setMessage] = useState('')
+  const [isError, setIsError] = useState(false)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
 
-  const blogFormRef = useRef();
-
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  const blogFormRef = useRef()
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    blogService.getAll().then((blogs) => setBlogs(blogs))
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
 
     if (loggedUserJSON) {
-      const usernew = JSON.parse(loggedUserJSON);
-      setUser(usernew);
-      loginService.setToken(usernew.token);
+      const usernew = JSON.parse(loggedUserJSON)
+      setUser(usernew)
+      loginService.setToken(usernew.token)
     }
-  }, []);
+  }, [])
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       const user = await loginService.login({
         username,
         password,
-      });
+      })
 
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-      loginService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
-      setMessage(`${username} logged-in!`);
-      setIsError(false);
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      loginService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+      setMessage(`${username} logged-in!`)
+      setIsError(false)
       setTimeout(() => {
-        setMessage("");
-      }, 2000);
+        setMessage('')
+      }, 2000)
     } catch (error) {
-      setMessage("wrong username or password");
-      setIsError(true);
+      setMessage('wrong username or password')
+      setIsError(true)
       setTimeout(() => {
-        setMessage(null);
-      }, 2000);
+        setMessage(null)
+      }, 2000)
     }
-  };
+  }
 
   const handleLogout = () => {
-    window.localStorage.clear();
-    window.location.reload();
-  };
+    window.localStorage.clear()
+    window.location.reload()
+  }
 
-  const handleBlog = async ({title, author, url}) => {
-    blogFormRef.current.toggleVisibility();
+  const handleBlog = async ({ title, author, url }) => {
+    blogFormRef.current.toggleVisibility()
 
     try {
       await blogService.create({
         title,
         author,
         url,
-      });
+      })
 
-      setMessage(`a new blog ${title} by ${author}`);
-      setIsError(false);
+      setMessage(`a new blog ${title} by ${author}`)
+      setIsError(false)
 
       setTimeout(() => {
-        setMessage("");
-      }, 2000);
+        setMessage('')
+      }, 2000)
 
-      const updatedBlogs = await blogService.getAll();
-      setBlogs(updatedBlogs);
+      const updatedBlogs = await blogService.getAll()
+      setBlogs(updatedBlogs)
     } catch (error) {
-      setMessage("Something went wrong!");
-      setIsError(true);
+      setMessage('Something went wrong!')
+      setIsError(true)
       setTimeout(() => {
-        setMessage(null);
-      }, 2000);
+        setMessage(null)
+      }, 2000)
     }
-  };
+  }
 
   return (
     <div>
@@ -125,7 +125,7 @@ const App = () => {
       {user && (
         <>
           <p>
-            {user.username} logged in{" "}
+            {user.username} logged in{' '}
             <button onClick={handleLogout}>logout</button>
           </p>
 
@@ -141,7 +141,7 @@ const App = () => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

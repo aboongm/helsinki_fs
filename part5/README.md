@@ -15,3 +15,4 @@ blog list submission contains
 -   part 5.10: Blog List Frontend, step 10
 -   part 5.11: Blog List Frontend, step 11
 
+-   part 5.12: Blog List Frontend, step 12
