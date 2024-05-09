@@ -16,3 +16,5 @@ blog list submission contains
 -   part 5.11: Blog List Frontend, step 11
 
 -   part 5.12: Blog List Frontend, step 12
+
+-   part 5.13: Blog List Tests, step 1

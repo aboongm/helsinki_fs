@@ -43,7 +43,8 @@ const Blog = ({ blog, setBlogs }) => {
 
   return (
     <div style={blogStyle}>
-      {blog.title} {blog.author} {' '}
+      <span className='title'>{blog.title}</span>
+      <span style={{margin: "4px"}}>{blog.author}</span>
       <button onClick={() => setView(!view)}>{view ? 'hide' : 'view'}</button>
       {view && (
         <div>
