@@ -50,11 +50,12 @@ const Blog = ({ blog, setBlogs }) => {
         <div>
           <div>{blog.url}</div>
           <div>
-            likes {blog.likes}
+            <span>likes</span> 
+            <span style={{margin: "4px"}}>{blog.likes}</span>
             <button onClick={handleLike}>like</button>
           </div>
           <div>{blog.author}</div>
-          {blog.user.username === user.username && (
+          {blog.user?.username === user?.username && (
             <button onClick={handleRemove}>remove</button>
           )}
         </div>
