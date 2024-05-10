@@ -20,3 +20,4 @@ blog list submission contains
 -   part 5.13: Blog List Tests, step 1
 -   part 5.14: Blog List Tests, step 2
 -   part 5.15: Blog List Tests, step 3
+-   part 5.16: Blog List Tests, step 4

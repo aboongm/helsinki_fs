@@ -17,7 +17,6 @@ const Blog = ({ blog, setBlogs, handleLike }) => {
   }
 
   const handleRemove = async () => {
-    console.log('handle remove!')
     try {
       await blogService.remove(blog)
       const updatedBlogs = await blogService.getAll()
