@@ -39,4 +39,25 @@ describe("Blog app", () => {
       await expect(page.getByText("wrong credentials")).toBeVisible();
     });
   });
+
+  describe("When logged in", () => {
+    beforeEach(async ({ page }) => {
+      await page.goto("http://localhost:5173");
+      await page.getByTestId("username").fill("aboongm");
+      await page.getByTestId("password").fill("boon11");
+      await page.getByRole("button", { name: "login" }).click();
+    });
+
+    test('a new blog can be created', async ({ page }) => {
+        await page.getByRole('button', { name: 'create new blog' }).click()
+        await page.getByTestId('title').fill('First blog')
+        await page.getByTestId('author').fill('John Doe')
+        await page.getByTestId('url').fill('https://johndoe.com')
+        await page.getByRole('button', { name: 'create' }).click()
+
+        const parent = page.getByRole('button', { name: 'view' }).locator('..')
+        await expect(parent.getByText('First blog')).toBeVisible()
+        await expect(parent.getByText('John Doe')).toBeVisible()
+    })
+  });
 });
