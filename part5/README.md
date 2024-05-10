@@ -24,3 +24,5 @@ blog list submission contains
 
 
 -   part 5.17: Blog List End To End Testing, step 1
+-   part 5.18: Blog List End To End Testing, step 2
+

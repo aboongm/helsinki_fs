@@ -49,7 +49,7 @@ const App = () => {
         setMessage('')
       }, 2000)
     } catch (error) {
-      setMessage('wrong username or password')
+      setMessage('wrong credentials')
       setIsError(true)
       setTimeout(() => {
         setMessage(null)
@@ -116,6 +116,7 @@ const App = () => {
             <div>
               username
               <input
+                data-testid='username'
                 type="text"
                 value={username}
                 name="Username"
@@ -125,6 +126,7 @@ const App = () => {
             <div>
               password
               <input
+                data-testid='password'
                 type="text"
                 value={password}
                 name="Password"
@@ -139,7 +141,7 @@ const App = () => {
       {user && (
         <>
           <p>
-            {user.username} logged in{' '}
+            {user.name} logged in{' '}
             <button onClick={handleLogout}>logout</button>
           </p>
 
