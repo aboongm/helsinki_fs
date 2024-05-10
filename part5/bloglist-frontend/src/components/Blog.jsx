@@ -2,7 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs }) => {
+const Blog = ({ blog, setBlogs, handleLike }) => {
   const [view, setView] = useState(false)
 
   const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -14,20 +14,6 @@ const Blog = ({ blog, setBlogs }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  }
-
-  const handleLike = async () => {
-    const updatedBlog = {
-      ...blog,
-      likes: blog.likes + 1
-    }
-    try {
-      await blogService.update(updatedBlog)
-      const updatedBlogs = await blogService.getAll()
-      setBlogs(updatedBlogs)
-    } catch (error) {
-      console.error(error)
-    }
   }
 
   const handleRemove = async () => {
@@ -51,8 +37,8 @@ const Blog = ({ blog, setBlogs }) => {
           <div>{blog.url}</div>
           <div>
             <span>likes</span> 
-            <span style={{margin: "4px"}}>{blog.likes}</span>
-            <button onClick={handleLike}>like</button>
+            <span className='likes'>{blog.likes}</span>
+            <button className='likeButton' onClick={()=>handleLike(blog)}>like</button>
           </div>
           <div>{blog.author}</div>
           {blog.user?.username === user?.username && (

@@ -89,6 +89,20 @@ const App = () => {
       }, 2000)
     }
   }
+  
+  const handleLike = async (blog) => {
+    const updatedBlog = {
+      ...blog,
+      likes: blog.likes + 1
+    }
+    try {
+      await blogService.update(updatedBlog)
+      const updatedBlogs = await blogService.getAll()
+      setBlogs(updatedBlogs)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <div>
@@ -136,7 +150,7 @@ const App = () => {
           </Togglable>
 
           {blogs.sort((a,b) => a.likes - b.likes).map((blog) => (
-            <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
+            <Blog key={blog.id} blog={blog} setBlogs={setBlogs} handleLike={handleLike} />
           ))}
         </>
       )}
