@@ -25,7 +25,9 @@ blog list submission contains
 
 -   part 5.17: Blog List End To End Testing, step 1
 -   part 5.18: Blog List End To End Testing, step 2
-        backend codes are in the same part5 folder.
-        cd backend/ and run 'npm run start:test'
+    -   backend codes are in the same part5 folder.
+    -   cd backend/ 
+    -   npm run start:test
 
+-   part 5.19: Blog List End To End Testing, step 3
 
