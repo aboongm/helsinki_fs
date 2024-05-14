@@ -35,3 +35,4 @@ blog list submission contains
 -   part 5.22: Blog List End To End Testing, step 6
     -   (part 5.22 needs to test as test.only() in 'npm run test -- --ui' otherwise it shows timeout error )
 
+-   part 5.23: Blog List End To End Testing, step 7

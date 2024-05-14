@@ -27,7 +27,7 @@ const Blog = ({ blog, setBlogs, handleLike }) => {
   };
 
   return (
-    <div className="blog-entry" style={blogStyle}>
+    <section className="blog-entry" style={blogStyle}>
       <span className="title">{blog.title}</span>
       <span style={{ margin: "4px" }}>{blog.author}</span>
       <button onClick={() => setView(!view)}>{view ? "hide" : "view"}</button>
@@ -47,7 +47,7 @@ const Blog = ({ blog, setBlogs, handleLike }) => {
           )}
         </div>
       )}
-    </div>
+    </section>
   );
 };
 
