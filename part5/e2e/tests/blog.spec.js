@@ -11,6 +11,13 @@ describe("Blog app", () => {
           password: "boon11",
         },
       });
+      await request.post("http://localhost:5173/api/users", {
+        data: {
+          name: "Other User",
+          username: "otheruser",
+          password: "password",
+        },
+      });
     } catch (error) {
       console.error("Error occurred during setup:", error);
       throw error;
@@ -36,7 +43,6 @@ describe("Blog app", () => {
       await page.getByTestId("username").fill("aboongm");
       await page.getByTestId("password").fill("wrong");
       await page.getByRole("button", { name: "login" }).click();
-
       await expect(page.getByText("wrong credentials")).toBeVisible();
     });
   });
@@ -71,9 +77,7 @@ describe("Blog app", () => {
       await page.getByRole("button", { name: "create" }).click();
 
       const parent = page.getByRole("button", { name: "view" }).locator("..");
-      await expect(
-        parent.getByText("A blog to be edited (liked)")
-      ).toBeVisible();
+      await expect(parent.getByText("A blog to be edited (liked)")).toBeVisible();
       await expect(parent.getByText("Aboong May")).toBeVisible();
       await page.getByRole("button", { name: "view" }).click();
 
@@ -86,6 +90,7 @@ describe("Blog app", () => {
       }
     });
 
+    // part 21: user who added the blog can delete the blog
     test("the user who added the blog can delete the blog", async ({
       page,
     }) => {
@@ -96,18 +101,38 @@ describe("Blog app", () => {
       await page.getByRole("button", { name: "create" }).click();
 
       const parent = page.getByRole("button", { name: "view" }).locator("..");
-      await expect(
-        parent.getByText("A blog to be deleted")
-      ).toBeVisible();
+      await expect(parent.getByText("A blog to be deleted")).toBeVisible();
       await page.getByRole("button", { name: "view" }).click();
 
       try {
         page.on("dialog", (dialog) => dialog.accept());
         await page.getByRole("button", { name: "remove" }).click();
-        await expect(parent.getByText('A blog to be deleted')).not.toBeVisible()
+        await expect(parent.getByText("A blog to be deleted")).not.toBeVisible();
       } catch (error) {
         console.error("Error occurred:", error);
       }
+    });
+
+    // part 5.22: only the user who added the blog sees the blog's delete button
+    test("only the user who added the blog sees the blog's delete button", async ({ page }) => {
+      await page.getByRole("button", { name: "create new blog" }).click();
+      await page.getByTestId("title").fill("Blog visible to creator");
+      await page.getByTestId("author").fill("Aboong May");
+      await page.getByTestId("url").fill("https://aboongmay.com");
+      await page.getByRole("button", { name: "create" }).click();
+
+      const parent = page.getByRole("button", { name: "view" }).locator("..");
+      await expect(parent.getByText("Blog visible to creator")).toBeVisible();
+      await page.getByRole("button", { name: "view" }).click();
+      await expect(page.getByRole("button", { name: "remove" })).toBeVisible();
+
+      await page.getByRole("button", { name: "logout" }).click();
+      await page.getByTestId("username").fill("otheruser");
+      await page.getByTestId("password").fill("password");
+      await page.getByRole("button", { name: "login" }).click({ timeout: 5000 });
+
+      await page.getByRole("button", { name: "view" }).click({ timeout: 5000 });
+      await expect(page.getByRole("button", { name: "remove" })).not.toBeVisible({ timeout: 5000 });
     });
   });
 });
