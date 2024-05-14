@@ -21,6 +21,7 @@ describe("Blog app", () => {
     await page.goto("http://localhost:5173");
   });
 
+  // part 5.18: Do the tests for login.
   describe("Login", () => {
     test("succeeds with correct credentials", async ({ page }) => {
       await page.goto("http://localhost:5173");
@@ -48,6 +49,7 @@ describe("Blog app", () => {
       await page.getByRole("button", { name: "login" }).click();
     });
 
+    // part 5.19: Create a test that verifies that a logged in user can create a blog. 
     test('a new blog can be created', async ({ page }) => {
         await page.getByRole('button', { name: 'create new blog' }).click()
         await page.getByTestId('title').fill('First blog')
@@ -59,5 +61,28 @@ describe("Blog app", () => {
         await expect(parent.getByText('First blog')).toBeVisible()
         await expect(parent.getByText('John Doe')).toBeVisible()
     })
+
+    // part 20: Do a test that makes sure the blog can be edited
+    test('blog can be liked (edited)', async ({ page }) => {
+        await page.getByRole('button', { name: 'create new blog' }).click()
+        await page.getByTestId('title').fill('A blog to be edited (liked)')
+        await page.getByTestId('author').fill('John Doe')
+        await page.getByTestId('url').fill('https://johndoe.com')
+        await page.getByRole('button', { name: 'create' }).click()
+    
+        const parent = page.getByRole('button', { name: 'view' }).locator('..')
+        await expect(parent.getByText('A blog to be edited (liked)')).toBeVisible()
+        await expect(parent.getByText('John Doe')).toBeVisible()
+        await page.getByRole('button', { name: 'view' }).click()
+        
+        try {
+            await page.getByRole('button', { name: 'like' }).click()
+            const likesSelector = await page.getByText('1')
+            await expect(likesSelector).toBeVisible()
+        } catch (error) {
+            console.error('Error occurred:', error)
+        }
+    })
+    
   });
 });

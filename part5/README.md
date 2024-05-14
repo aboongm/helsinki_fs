@@ -30,4 +30,5 @@ blog list submission contains
     -   npm run start:test
 
 -   part 5.19: Blog List End To End Testing, step 3
+-   part 5.20: Blog List End To End Testing, step 4
 

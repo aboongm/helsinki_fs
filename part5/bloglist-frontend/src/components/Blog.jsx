@@ -1,43 +1,45 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
-import blogService from '../services/blogs'
+import { useState } from "react";
+import PropTypes from "prop-types";
+import blogService from "../services/blogs";
 
 const Blog = ({ blog, setBlogs, handleLike }) => {
-  const [view, setView] = useState(false)
+  const [view, setView] = useState(false);
 
-  const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-  let user = JSON.parse(loggedUserJSON)
+  const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+  let user = JSON.parse(loggedUserJSON);
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid',
+    border: "solid",
     borderWidth: 1,
-    marginBottom: 5
-  }
+    marginBottom: 5,
+  };
 
   const handleRemove = async () => {
     try {
-      await blogService.remove(blog)
-      const updatedBlogs = await blogService.getAll()
-      setBlogs(updatedBlogs)
+      await blogService.remove(blog);
+      const updatedBlogs = await blogService.getAll();
+      setBlogs(updatedBlogs);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   return (
     <div style={blogStyle}>
-      <span className='title'>{blog.title}</span>
-      <span style={{margin: "4px"}}>{blog.author}</span>
-      <button onClick={() => setView(!view)}>{view ? 'hide' : 'view'}</button>
+      <span className="title">{blog.title}</span>
+      <span style={{ margin: "4px" }}>{blog.author}</span>
+      <button onClick={() => setView(!view)}>{view ? "hide" : "view"}</button>
       {view && (
         <div>
           <div>{blog.url}</div>
           <div>
-            <span>likes</span> 
-            <span className='likes'>{blog.likes}</span>
-            <button className='likeButton' onClick={()=>handleLike(blog)}>like</button>
+            <span>likes</span>
+            <span className="likes">{blog.likes}</span>
+            <button className="likeButton" onClick={() => handleLike(blog)}>
+              like
+            </button>
           </div>
           <div>{blog.author}</div>
           {blog.user?.username === user?.username && (
@@ -46,8 +48,8 @@ const Blog = ({ blog, setBlogs, handleLike }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 Blog.propTypes = {
   blog: PropTypes.shape({
@@ -61,6 +63,6 @@ Blog.propTypes = {
     }).isRequired,
   }).isRequired,
   setBlogs: PropTypes.func.isRequired,
-}
+};
 
-export default Blog
+export default Blog;
