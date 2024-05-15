@@ -1,4 +1,4 @@
-import { VOTE_ANECDOTE, ADD_ANECDOTE } from "./actions";
+// import { VOTE_ANECDOTE, ADD_ANECDOTE } from "./actions";
 
 const anecdotesAtStart = [
   "If it hurts, do it more often",
@@ -22,21 +22,32 @@ const asObject = (anecdote) => {
 const initialState = anecdotesAtStart.map(asObject);
 
 const reducer = (state = initialState, action) => {
-  console.log("state now: ", state);
-  console.log("action", action);
-
   switch (action.type) {
-    case VOTE_ANECDOTE:
+    case "VOTE_ANECDOTE":
       return state.map((anecdote) =>
         anecdote.id === action.payload
           ? { ...anecdote, votes: anecdote.votes + 1 }
           : anecdote
       );
-    case ADD_ANECDOTE:
+    case "ADD_ANECDOTE":
       return [...state, action.payload];
     default:
       return state;
   }
+};
+
+export const voteAnecdote = (id) => {
+  return {
+    type: "VOTE_ANECDOTE",
+    payload: id,
+  };
+};
+
+export const addAnecdote = (anecdote) => {
+  return {
+    type: "ADD_ANECDOTE",
+    payload: anecdote,
+  };
 };
 
 export default reducer;
