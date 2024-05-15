@@ -7,3 +7,5 @@ Unicafe submission contains
 
 
 -   part 6.3: Anecdotes, step 1
+-   part 6.4: Anecdotes, step 2
+
