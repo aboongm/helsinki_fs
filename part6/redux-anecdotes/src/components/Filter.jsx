@@ -7,7 +7,6 @@ const Filter = () => {
   const filter = useSelector(state => state.filter)
   
   const handleChange = (event) => {
-    // input-field value is in variable event.target.value
     const filterValue = event.target.value
     dispatch(filterChange(filterValue))
   }
