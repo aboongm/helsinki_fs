@@ -13,3 +13,4 @@ Unicafe submission contains
 -   part 6.7: Anecdotes, step 5
 -   part 6.8: Anecdotes, step 6
 
+-   part 6.9 Better Anecdotes, step 7
