@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const anecdotesAtStart = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -19,33 +21,54 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject);
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "VOTE_ANECDOTE":
+// const reducer = (state = initialState, action) => {
+//   switch (action.type) {
+//     case "VOTE_ANECDOTE":
+//       return state.map((anecdote) =>
+//         anecdote.id === action.payload
+//           ? { ...anecdote, votes: anecdote.votes + 1 }
+//           : anecdote
+//       );
+//     case "ADD_ANECDOTE":
+//       return [...state, action.payload];
+//     default:
+//       return state;
+//   }
+// };
+
+// export const voteAnecdote = (id) => {
+//   return {
+//     type: "VOTE_ANECDOTE",
+//     payload: id,
+//   };
+// };
+
+// export const addAnecdote = (anecdote) => {
+//   return {
+//     type: "ADD_ANECDOTE",
+//     payload: anecdote,
+//   };
+// };
+
+// export default reducer;
+
+export const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    voteAnecdote: (state, action)=>{
       return state.map((anecdote) =>
-        anecdote.id === action.payload
-          ? { ...anecdote, votes: anecdote.votes + 1 }
-          : anecdote
-      );
-    case "ADD_ANECDOTE":
+                anecdote.id === action.payload
+                  ? { ...anecdote, votes: anecdote.votes + 1 }
+                  : anecdote
+              );
+    },
+    addAnecdote: (state, action)=>{
       return [...state, action.payload];
-    default:
-      return state;
+    },
   }
-};
+})
 
-export const voteAnecdote = (id) => {
-  return {
-    type: "VOTE_ANECDOTE",
-    payload: id,
-  };
-};
+export const { voteAnecdote, addAnecdote } = anecdoteSlice.actions
 
-export const addAnecdote = (anecdote) => {
-  return {
-    type: "ADD_ANECDOTE",
-    payload: anecdote,
-  };
-};
-
-export default reducer;
+export default anecdoteSlice.reducer

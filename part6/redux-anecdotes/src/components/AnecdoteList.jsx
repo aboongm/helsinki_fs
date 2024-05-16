@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 const AnecdoteList = () => {
   const dispatch = useDispatch();
+
+  const anecdotes = useSelector((state) => {
+    const filteredAnecdotes = state.anecdotes.filter((anecdote) =>
+      anecdote.content.toLowerCase().includes(state.filter.toLowerCase())
+    );
+    const sortedAnecdotes = [...filteredAnecdotes].sort(
+      (a, b) => b.votes - a.votes
+    );
+    return sortedAnecdotes;
+  });
   
-  const anecdotes = useSelector((state) =>
-    state.anecdotes
-      .sort((a, b) => b.votes - a.votes)
-      .filter((anecdote) =>
-        anecdote.content.toLowerCase().includes(state.filter?.toLowerCase())
-      )
-  );
-console.log('state: ', useSelector(state=>state));
   const vote = (id) => {
     dispatch(voteAnecdote(id));
   };
