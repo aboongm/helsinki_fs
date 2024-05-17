@@ -27,5 +27,6 @@ Unicafe submission contains
 -   part 6.18 Anecdotes and the Backend, step 5
 -   part 6.19 Anecdotes and the Backend, step 6
 
--   part Exercises 6.20
+-   part Exercise 6.20
 -   part Exercise 6.21
+-   part Exercise 6.22

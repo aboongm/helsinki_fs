@@ -31,9 +31,19 @@
       "votes": 0
     },
     {
+      "content": "test anecdote",
+      "votes": 1,
+      "id": "bg5J3mA"
+    },
+    {
       "content": "new anecdote",
-      "votes": 0,
-      "id": "ZCkUWh8"
+      "votes": 1,
+      "id": "fpLwsAX"
+    },
+    {
+      "content": "new anecdote1",
+      "votes": 6,
+      "id": "vzztZ6P"
     }
   ]
 }
