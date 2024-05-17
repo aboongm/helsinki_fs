@@ -33,7 +33,12 @@
     {
       "id": "078c",
       "content": "new anecdote",
-      "votes": 2
+      "votes": 5
+    },
+    {
+      "id": "3a57",
+      "content": "test anecdote",
+      "votes": 1
     }
   ]
 }
