@@ -30,3 +30,5 @@ Unicafe submission contains
 -   part Exercise 6.20
 -   part Exercise 6.21
 -   part Exercise 6.22
+
+-   part Exercise 6.23
