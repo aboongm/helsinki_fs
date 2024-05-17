@@ -23,7 +23,7 @@ export const anecdoteSlice = createSlice({
                   : anecdote
               );
     },
-    addAnecdote: (state, action)=>{
+    createAnecdote: (state, action)=>{
       return [...state, action.payload];
     },
     appendAnecdote(state, action) {
@@ -35,6 +35,6 @@ export const anecdoteSlice = createSlice({
   }
 })
 
-export const { voteAnecdote, addAnecdote, appendAnecdote, setAnecdotes } = anecdoteSlice.actions
+export const { voteAnecdote, createAnecdote, appendAnecdote, setAnecdotes } = anecdoteSlice.actions
 
 export default anecdoteSlice.reducer
