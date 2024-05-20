@@ -83,11 +83,10 @@ const About = () => (
 
 const Footer = () => (
   <div>
-    Anecdote app for <a href="https://fullstackopen.com/">Full Stack Open</a>.
+    Anecdote app for {<Link to="https://fullstackopen.com/">Full Stack Open</Link>}.
     See{" "}
-    <a href="https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js">
-      https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js
-    </a>{" "}
+    {<Link to="https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js/">https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js</Link>}
+    {" "}
     for the source code.
   </div>
 );
@@ -97,6 +96,8 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
 
+  const navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
@@ -105,6 +106,11 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     });
+    props.setNotification(`A new anecdote ${content} created!`);
+    setTimeout(() => {
+      props.setNotification('');
+    }, 3000);
+    navigate('/')
   };
 
   return (
@@ -184,13 +190,14 @@ const App = () => {
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
+        {notification}
         <Routes>
           <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
           <Route
             path="/anecdotes/:id"
             element={<Anecdote anecdotes={anecdotes} />}
           />
-          <Route path="/create" element={<CreateNew addNew={addNew} />} />
+          <Route path="/create" element={<CreateNew addNew={addNew} setNotification={setNotification} />} />
           <Route path="/about" element={<About />} />
         </Routes>
         <Footer />
