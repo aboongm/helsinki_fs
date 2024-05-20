@@ -9,6 +9,7 @@ import {
   useNavigate,
   useMatch,
 } from "react-router-dom";
+import { useField } from "./hooks";
 
 const Menu = () => {
   const padding = {
@@ -43,8 +44,10 @@ const AnecdoteList = ({ anecdotes }) => (
 );
 
 const Anecdote = ({ anecdotes }) => {
-  const match = useMatch('/anecdotes/:id');
-  const anecdote = match ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id)) : null;
+  const match = useMatch("/anecdotes/:id");
+  const anecdote = match
+    ? anecdotes.find((anecdote) => anecdote.id === Number(match.params.id))
+    : null;
 
   if (!anecdote) {
     return <div>Anecdote not found</div>;
@@ -83,34 +86,40 @@ const About = () => (
 
 const Footer = () => (
   <div>
-    Anecdote app for {<Link to="https://fullstackopen.com/">Full Stack Open</Link>}.
-    See{" "}
-    {<Link to="https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js/">https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js</Link>}
-    {" "}
+    Anecdote app for{" "}
+    {<Link to="https://fullstackopen.com/">Full Stack Open</Link>}. See{" "}
+    {
+      <Link to="https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js/">
+        https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js
+      </Link>
+    }{" "}
     for the source code.
   </div>
 );
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  // const [content, setContent] = useState("");
+  // const [author, setAuthor] = useState("");
+  // const [info, setInfo] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const content = useField("text");
+  const author = useField("text");
+  const info = useField("text");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
-    props.setNotification(`A new anecdote ${content} created!`);
+    props.setNotification(`A new anecdote ${content.value} created!`);
     setTimeout(() => {
-      props.setNotification('');
+      props.setNotification("");
     }, 3000);
-    navigate('/')
+    navigate("/");
   };
 
   return (
@@ -119,27 +128,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...content} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...info} />
         </div>
         <button>create</button>
       </form>
@@ -197,7 +194,12 @@ const App = () => {
             path="/anecdotes/:id"
             element={<Anecdote anecdotes={anecdotes} />}
           />
-          <Route path="/create" element={<CreateNew addNew={addNew} setNotification={setNotification} />} />
+          <Route
+            path="/create"
+            element={
+              <CreateNew addNew={addNew} setNotification={setNotification} />
+            }
+          />
           <Route path="/about" element={<About />} />
         </Routes>
         <Footer />
