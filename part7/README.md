@@ -7,5 +7,6 @@ routed-anecdotes submission contains
 -   part 7.3: Routed Anecdotes, step3
 
 -   part 7.4: Anecdotes and Hooks step 1
+-   part 7.5: Anecdotes and Hooks step 2
 
 
