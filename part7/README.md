@@ -9,6 +9,8 @@ routed-anecdotes submission contains
 -   part 7.4: Anecdotes and Hooks step 1
 -   part 7.5: Anecdotes and Hooks step 2
 -   part 7.6: Anecdotes and Hooks step 3
+-   part 7.7: Country hook
+
 
 
 
