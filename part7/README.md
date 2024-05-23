@@ -13,7 +13,7 @@ routed-anecdotes submission contains
 -   part 7.8: Ultimate Hooks
 
 
-    <!-- Bloglist-frontend and backend starters from part 5 -->
 -   part 7.9: Automatic Code Formatting
+    -   Bloglist-frontend and backend starters from part 5
 
 
